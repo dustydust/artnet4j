@@ -43,6 +43,19 @@ public class ArtNet {
     protected ArtNetServer server;
     protected ArtNetNodeDiscovery discovery;
 
+    /* */
+    protected int receivePort = ArtNetServer.DEFAULT_PORT;
+    protected int sendPort = ArtNetServer.DEFAULT_PORT;
+    /* */
+
+    public void setReceivePort(int port) {
+        receivePort = port;
+    }
+    
+    public void setSendPort(int port) {
+        sendPort = port;
+    }
+
     public ArtNet() {
         logger.info("Art-Net v" + VERSION);
     }
@@ -63,7 +76,8 @@ public class ArtNet {
     }
 
     public void init() {
-        server = new ArtNetServer();
+        initServer();
+        // server = new ArtNetServer(receivePort, sendPort);
         server.addListener(new ArtNetServerEventAdapter() {
 
             @Override
@@ -85,6 +99,10 @@ public class ArtNet {
                 logger.info("server stopped");
             }
         });
+    }
+
+    public void initServer() {
+        server = new ArtNetServer(receivePort, sendPort);
     }
 
     public void removeServerListener(ArtNetServerListener l) {
