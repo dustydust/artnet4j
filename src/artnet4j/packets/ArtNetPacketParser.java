@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 
 public class ArtNetPacketParser {
 
-    public static final Logger logger =
-            Logger.getLogger(ArtNetPacketParser.class.getClass().getName());
+    public static final Logger logger = Logger
+            .getLogger(ArtNetPacketParser.class.getClass().getName());
 
     public static ArtNetPacket createPacketForOpCode(int opCode, byte[] data) {
         logger.finer("creating packet instance for opcode: 0x"

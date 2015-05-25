@@ -25,6 +25,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Arrays; //
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ import artnet4j.packets.ArtNetPacket;
 import artnet4j.packets.ArtNetPacketParser;
 import artnet4j.packets.ArtPollPacket;
 import artnet4j.packets.PacketType;
+import artnet4j.packets.ByteUtils;
 
 public class ArtNetServer extends ArtNetNode implements Runnable {
 
@@ -92,18 +94,20 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 
 	@Override
 	public void run() {
+		
 		byte[] receiveBuffer = new byte[receiveBufferSize];
-		DatagramPacket receivedPacket = new DatagramPacket(receiveBuffer,
-				receiveBuffer.length);
+		DatagramPacket receivedPacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+
 		try {
 			while (isRunning) {
 				socket.receive(receivedPacket);
 				logger.finer("received new packet");
+				
 				ArtNetPacket packet = ArtNetPacketParser.parse(receivedPacket);
+
 				if (packet != null) {
 					if (packet.getType() == PacketType.ART_POLL) {
-						sendArtPollReply(receivedPacket.getAddress(),
-								(ArtPollPacket) packet);
+						sendArtPollReply(receivedPacket.getAddress(), (ArtPollPacket) packet);
 					}
 					for (ArtNetServerListener l : listeners) {
 						l.artNetPacketReceived(packet);
@@ -146,10 +150,13 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 		if (socket == null) {
 			socket = new DatagramSocket(port);
 			logger.info("Art-Net server started at port: " + port);
+			
 			for (ArtNetServerListener l : listeners) {
 				l.artNetServerStarted(this);
 			}
+
 			isRunning = true;
+
 			serverThread = new Thread(this);
 			serverThread.start();
 		} else {

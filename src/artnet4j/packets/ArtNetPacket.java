@@ -27,8 +27,7 @@ public abstract class ArtNetPacket {
 
     public static final int PROTOCOL_VERSION = 14;
 
-    public static final Logger logger =
-            Logger.getLogger(ArtNetPacket.class.getClass().getName());
+    public static final Logger logger = Logger.getLogger(ArtNetPacket.class.getClass().getName());
 
     protected ByteUtils data;
     protected final PacketType type;
