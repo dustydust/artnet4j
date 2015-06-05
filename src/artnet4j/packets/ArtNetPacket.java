@@ -46,7 +46,7 @@ public abstract class ArtNetPacket {
     /**
      * Returns the actually used length of the data buffer.
      * 
-     * @return
+     * @return int
      */
     public int getLength() {
         return data.length;
@@ -67,13 +67,13 @@ public abstract class ArtNetPacket {
      * check the packet header anymore since this has already been done at this
      * stage.
      * 
-     * @param raw
+     * @param raw byte[]
      * @return true, if there were no parse errors
      */
     public abstract boolean parse(byte[] raw);
 
     /**
-     * @param data
+     * @param data byte[]
      *            the data to set
      */
     public void setData(byte[] data) {
