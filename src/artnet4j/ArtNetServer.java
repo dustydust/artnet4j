@@ -25,7 +25,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Arrays; //
+//import java.util.Arrays; //
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,7 +35,7 @@ import artnet4j.packets.ArtNetPacket;
 import artnet4j.packets.ArtNetPacketParser;
 import artnet4j.packets.ArtPollPacket;
 import artnet4j.packets.PacketType;
-import artnet4j.packets.ByteUtils;
+//import artnet4j.packets.ByteUtils;
 
 public class ArtNetServer extends ArtNetNode implements Runnable {
 
@@ -172,15 +172,15 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 	/**
 	 * Sends the given packet to the specified IP address.
 	 * 
-	 * @param ap
-	 * @param targetAdress
+	 * @param ap ArtNetPacket
+	 * @param targetAddress InetAddress
 	 */
-	public void unicastPacket(ArtNetPacket ap, InetAddress targetAdress) {
+	public void unicastPacket(ArtNetPacket ap, InetAddress targetAddress) {
 		try {
 			DatagramPacket packet = new DatagramPacket(ap.getData(), ap
-					.getLength(), targetAdress, sendPort);
+					.getLength(), targetAddress, sendPort);
 			socket.send(packet);
-			logger.finer("sent packet to: " + targetAdress);
+			logger.finer("sent packet to: " + targetAddress);
 			for (ArtNetServerListener l : listeners) {
 				l.artNetPacketUnicasted(ap);
 			}
