@@ -60,6 +60,10 @@ public class ArtNet {
         logger.info("Art-Net v" + VERSION);
     }
 
+    public void setServerSocketReceiveBufferSize(int size) {
+      server.setSocketReceiveBufferSize(size);
+    }
+
     public void addServerListener(ArtNetServerListener l) {
         server.addListener(l);
     }

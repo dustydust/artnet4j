@@ -50,7 +50,8 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 	protected InetAddress broadCastAddress;
 	protected Thread serverThread;
 
-	protected int receiveBufferSize;
+	protected int datagramReceiveBufferSize;
+	protected int socketReceiveBufferSize = 256 * 1024;
 	protected boolean isRunning;
 
 	protected final List<ArtNetServerListener> listeners;
@@ -64,7 +65,7 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 		this.port = port;
 		this.sendPort = sendPort;
 		this.listeners = new ArrayList<ArtNetServerListener>();
-		setBufferSize(2048);
+		setDatagramBufferSize(2048);
 	}
 
 	public void addListener(ArtNetServerListener l) {
@@ -95,7 +96,7 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 	@Override
 	public void run() {
 		
-		byte[] receiveBuffer = new byte[receiveBufferSize];
+		byte[] receiveBuffer = new byte[datagramReceiveBufferSize];
 		DatagramPacket receivedPacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
 
 		try {
@@ -137,9 +138,15 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 		}
 	}
 
-	private void setBufferSize(int size) {
+	private void setDatagramBufferSize(int size) {
 		if (!isRunning) {
-			receiveBufferSize = size;
+			datagramReceiveBufferSize = size;
+		}
+	}
+
+	public void setSocketReceiveBufferSize(int size) {
+		if (!isRunning) {
+			socketReceiveBufferSize = size;
 		}
 	}
 
@@ -149,6 +156,8 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 		}
 		if (socket == null) {
 			socket = new DatagramSocket(port);
+			socket.setReceiveBufferSize(this.socketReceiveBufferSize);
+			logger.info("Socket.receiveBuffer is " + socket.getReceiveBufferSize());
 			logger.info("Art-Net server started at port: " + port);
 			
 			for (ArtNetServerListener l : listeners) {
