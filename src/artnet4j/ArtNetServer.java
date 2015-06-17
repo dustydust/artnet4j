@@ -157,7 +157,7 @@ public class ArtNetServer extends ArtNetNode implements Runnable {
 		if (socket == null) {
 			socket = new DatagramSocket(port);
 			socket.setReceiveBufferSize(this.socketReceiveBufferSize);
-			logger.info("Socket.receiveBuffer is " + socket.getReceiveBufferSize());
+			logger.fine("Socket.receiveBuffer is " + socket.getReceiveBufferSize());
 			logger.info("Art-Net server started at port: " + port);
 			
 			for (ArtNetServerListener l : listeners) {
