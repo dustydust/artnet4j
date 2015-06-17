@@ -38,7 +38,7 @@ public class ArtNet {
 
     protected static final long ARTPOLL_REPLY_TIMEOUT = 3000;
 
-    protected static final String VERSION = "0001-20091119";
+    protected static final String VERSION = "0002-20150519";
 
     protected ArtNetServer server;
     protected ArtNetNodeDiscovery discovery;
@@ -57,7 +57,7 @@ public class ArtNet {
     }
 
     public ArtNet() {
-        logger.info("Art-Net v" + VERSION);
+        logger.fine("Art-Net v" + VERSION);
     }
 
     public void setServerSocketReceiveBufferSize(int size) {
