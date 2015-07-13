@@ -27,6 +27,7 @@ public class ArtDmxPacket extends ArtNetPacket {
     private int sequenceID;
     private int subnetID;
     private int universeID;
+    private int netID;
     private byte[] dmxData;
 
     public ArtDmxPacket() {
@@ -80,6 +81,13 @@ public class ArtDmxPacket extends ArtNetPacket {
         return universeID;
     }
 
+    /**
+     * @return the netId
+     */
+    public int getNetID() {
+        return netID;
+    }
+
     @Override
     public boolean parse(byte[] raw) {
         setData(raw);
@@ -87,6 +95,7 @@ public class ArtDmxPacket extends ArtNetPacket {
         int subnetUniverse = data.getInt8(14);
         subnetID = subnetUniverse >> 4;
         universeID = subnetUniverse & 0x0f;
+        netID = data.getInt8(15);
         numChannels = data.getInt16(16);
         dmxData = data.getByteChunk(dmxData, 18, numChannels);
         return true;
@@ -137,5 +146,13 @@ public class ArtDmxPacket extends ArtNetPacket {
      */
     public void setUniverseID(int universeID) {
         this.universeID = universeID & 0x0f;
+    }
+
+    /**
+     * @param netID
+     *            the netID to set
+     */
+    public void setNetID(int netID) {
+        this.netID = netID & 0xff;
     }
 }
